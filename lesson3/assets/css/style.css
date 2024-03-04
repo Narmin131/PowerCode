@@ -1,0 +1,23 @@
+.light {
+  --headerBg: red;
+  --textColor: white;
+}
+
+.dark {
+  --headerBg: blue;
+  --textColor: black;
+}
+
+header {
+  width: 100%;
+  height: 12vh;
+  background-color: var(--headerBg);
+}
+
+header h1 {
+  color: var(--textColor);
+}
+
+button {
+  background-color: var(--textColor);
+}
