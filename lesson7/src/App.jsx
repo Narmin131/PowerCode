@@ -1,0 +1,78 @@
+import React, { useEffect, useState } from "react";
+import WishBtn from "./components/WishBtn";
+import { useSelector, useDispatch } from "react-redux";
+import { incrementFunc, decrementFunc, reset } from "./redux/action/index";
+import i18next from "./i18n/i18next";
+import i18n from "./i18n/i18next";
+import { useTranslation } from "react-i18next";
+const App = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch("https://dummyjson.com/products")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.products);
+        setData(data.products);
+      });
+  });
+
+  // const location = useNavigate()
+
+  // location('/login')
+  // window.location.assign('/login')
+
+  const dispatch = useDispatch();
+  const counter = useSelector((store) => store.AppReducer);
+  console.log(counter);
+
+  const changeLanguage = (lang) => {
+    i18n.changeLanguage(lang);
+  };
+
+  const { t } = useTranslation();
+
+  return (
+    <>
+      <section className="m-5">
+        <span>{counter}</span>
+
+        <button onClick={() => changeLanguage("az")}>az</button>
+        <button onClick={() => changeLanguage("en")}>en</button>
+
+        <h1>{t("header.1.salam")}</h1>
+
+        <button onClick={() => dispatch(incrementFunc())}>+</button>
+        <button onClick={() => dispatch(decrementFunc())}>-</button>
+        <button onClick={() => dispatch(reset())}>reset</button>
+        <div className="container">
+          <div className="row">
+            {data.map((item) => {
+              return (
+                <div className="col-lg-3 p-3">
+                  <div
+                    className="card"
+                    style={{ width: "100%", height: "600px" }}
+                  >
+                    <img
+                      src={item.thumbnail}
+                      className="card-img-top"
+                      alt="..."
+                    />
+                    <div className="card-body">
+                      <h5 className="card-title">{item.title}</h5>
+                      <p className="card-text"></p>
+                      <WishBtn myProduct={item} />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default App;
